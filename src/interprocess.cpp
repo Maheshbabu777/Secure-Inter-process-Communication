@@ -11,19 +11,19 @@ void create_shm()
      ftruncate(shared_mem, SHM_SIZE);
      close(shared_mem);
 }
-void write_to_shm(const string &str)
-{
+void write_to_shm(const string &str) {
      int mem = shm_open(SHM_NAME, O_RDWR, 0666);
-     if (mem == -1)
-     {
-          printf("Error opening shared memory to write");
-          return;
+     if (mem == -1) {
+         printf("Error opening shared memory to write\n");
+         return;
      }
      void *ptr = mmap(0, SHM_SIZE, PROT_WRITE, MAP_SHARED, mem, 0);
-     memcpy(ptr, str.c_str(), str.length());
+     memset(ptr, 0, SHM_SIZE);  // Clear the shared memory before writing
+     memcpy(ptr, str.c_str(), str.length() + 1);  // Write message with null terminator
      munmap(ptr, SHM_SIZE);
      close(mem);
-}
+ }
+ 
 string read_from_shm()
 {
      int mem = shm_open(SHM_NAME, O_RDONLY, 0666);

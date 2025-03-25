@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Inter-Process Communication</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: left;
+            display: none; /* Hidden by default */
+        }
+        p {
+            margin: 10px 0;
+            color: #555;
+        }
+        .message {
+            font-weight: bold;
+            color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Secure Inter-Process Communication</h2>
+
+        <div id="formSection">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+
+            <label for="message">Enter Your Message:</label>
+            <textarea id="message" rows="4" required></textarea>
+
+            <button onclick="processMessage()">Send and Encrypt</button>
+        </div>
+
+        <div id="resultSection" class="output">
+            <p><strong>Encrypted Message in Shared Memory:</strong></p>
+            <p class="message" id="encryptedMessage"></p>
+
+            <p><strong>Decrypted Message from Message Queue:</strong></p>
+            <p class="message" id="decryptedMessage"></p>
+
+            <button onclick="goBack()">Send Another Message</button>
+        </div>
+    </div>
+
+    <script>
+        function processMessage() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const message = document.getElementById("message").value;
+
+            if (!username || !password || !message) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            // Dummy encryption/decryption logic (replace with actual implementation)
+            const encryptedMessage = btoa(message);  // Simple base64 encoding (for demonstration)
+            const decryptedMessage = atob(encryptedMessage);
+
+            // Display results in the HTML
+            document.getElementById("encryptedMessage").innerText = encryptedMessage;
+            document.getElementById("decryptedMessage").innerText = decryptedMessage;
+
+            // Hide the form and show the result section
+            document.getElementById("formSection").style.display = "none";
+            document.getElementById("resultSection").style.display = "block";
+        }
+
+        function goBack() {
+            // Reset fields and toggle visibility
+            document.getElementById("formSection").style.display = "block";
+            document.getElementById("resultSection").style.display = "none";
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+            document.getElementById("message").value = "";
+        }
+    </script>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-#include "security_layer.h"
+#include "../include/security.h"
 using namespace std;
 const string SECRET_KEY = "Seurity789@";
 
@@ -13,7 +13,7 @@ string encrypt(const string &data) {
 string decrypt(const string &data) {
     string decrypted_data = data;
     for (int i = 0; i < decrypted_data.size(); i++) {
-        decrypted_data[i] = encrypted_data[i] ^ SECRET_KEY[i % SECRET_KEY.size()];  
+        decrypted_data[i] = decrypted_data[i] ^ SECRET_KEY[i % SECRET_KEY.size()];  
     }
     return decrypted_data;
 }

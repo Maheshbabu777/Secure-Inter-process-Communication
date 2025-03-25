@@ -1,0 +1,3 @@
+Log: Login successful: user1
+Log: Message read from shared memory and decrypted successfully.
+Log: Message sent, received, and decrypted successfully using message queue.
