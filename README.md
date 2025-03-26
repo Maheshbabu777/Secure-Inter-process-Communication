@@ -63,14 +63,15 @@ Ensure you have the following installed:
    ```bash  
    git clone https://github.com/MaheshBabu777/Secure-Inter-process-Communication.git  
    cd Secure-Inter-process-Communication
-   # **Compile the C++ Code**  
-
-Use the following command to compile the project:  
-
-```bash  
-g++ -o secureIPC src/interprocess.cpp src/security.cpp src/management.cpp main.cpp  
-./secureIPC
-# **Running the HTML Interface**  
+   ```
+# **Compile the C++ Code**  
+   Use the following command to compile the project:  
+  
+   ```bash  
+   g++ -o secureIPC src/interprocess.cpp src/security.cpp src/management.cpp main.cpp  
+   ./secureIPC
+   ```
+**Running the HTML Interface**  
 
 To run the HTML interface, follow these steps:  
 
@@ -97,6 +98,7 @@ The encryption used in the project follows an **XOR-based algorithm** with a pre
 
 ```cpp  
 const string secretKey = "Security789@";
+```
 # **Project Structure (Summary)**  
 
 ```bash  
@@ -115,7 +117,7 @@ Secure-Inter-process-Communication/
 ├── main.cpp                       
 ├── index.html                   
 └── README.md                    
-
+```
 # **Links**  
 
 - **GitHub Repository:** [https://github.com/Maheshbabu777/Secure-Inter-process-Communication.git](#)  
