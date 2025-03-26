@@ -115,6 +115,15 @@
     </div>
 
     <script>
+        function encryptMessage(message) {
+            const secretKey = 'Security789@';
+            return message.split('').map((char, i) => String.fromCharCode(char.charCodeAt(0) ^ secretKey[i % secretKey.length].charCodeAt(0))).join('');
+        }
+
+        function decryptMessage(encryptedMessage) {
+            const secretKey = 'Security789@';
+            return encryptedMessage.split('').map((char, i) => String.fromCharCode(char.charCodeAt(0) ^ secretKey[i % secretKey.length].charCodeAt(0))).join('');
+        }
         function processMessage() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
@@ -124,8 +133,8 @@
 
             if ((username === "user1" && password === "user@001") || (username === "user2" && password === "user@002")) {
                 errorMsg.innerText = "";
-                const encryptedMessage = btoa(message);
-                const decryptedMessage = atob(encryptedMessage);
+                const encryptedMessage = encryptMessage(message);
+                const decryptedMessage = decryptMessage(encryptedMessage);
 
                 document.getElementById("encryptedMessage").innerText = encryptedMessage;
                 document.getElementById("decryptedMessage").innerText = decryptedMessage;
