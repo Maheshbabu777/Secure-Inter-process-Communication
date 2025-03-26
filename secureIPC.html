@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +12,7 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -19,6 +21,7 @@
             align-items: center;
             height: 100vh;
         }
+
         .container {
             background-color: white;
             padding: 20px 30px;
@@ -27,44 +30,59 @@
             width: 400px;
             text-align: center;
         }
+
         h2 {
             margin-bottom: 15px;
             color: #333;
         }
-        input, textarea, button {
+
+        input,
+        textarea,
+        button {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
             border-radius: 5px;
             border: 1px solid #ccc;
         }
+
         button {
             background-color: #007BFF;
             color: white;
             border: none;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
         .output {
             background-color: #e9ecef;
             padding: 15px;
             border-radius: 10px;
             margin-top: 20px;
             text-align: left;
-            display: none; /* Hidden by default */
+            display: none;
         }
+
         p {
             margin: 10px 0;
             color: #555;
         }
+
         .message {
             font-weight: bold;
             color: #007BFF;
         }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
 
     <div class="container">
@@ -79,6 +97,8 @@
 
             <label for="message">Enter Your Message:</label>
             <textarea id="message" rows="4" required></textarea>
+
+            <p id="errorMsg" class="error"></p>
 
             <button onclick="processMessage()">Send and Encrypt</button>
         </div>
@@ -100,33 +120,33 @@
             const password = document.getElementById("password").value;
             const message = document.getElementById("message").value;
 
-            if (!username || !password || !message) {
-                alert("Please fill in all fields.");
-                return;
+            const errorMsg = document.getElementById("errorMsg");
+
+            if ((username === "user1" && password === "user@001") || (username === "user2" && password === "user@002")) {
+                errorMsg.innerText = "";
+                const encryptedMessage = btoa(message);
+                const decryptedMessage = atob(encryptedMessage);
+
+                document.getElementById("encryptedMessage").innerText = encryptedMessage;
+                document.getElementById("decryptedMessage").innerText = decryptedMessage;
+
+                document.getElementById("formSection").style.display = "none";
+                document.getElementById("resultSection").style.display = "block";
+            } else {
+                errorMsg.innerText = "Invalid username or password. Please try again.";
             }
-
-            // Dummy encryption/decryption logic (replace with actual implementation)
-            const encryptedMessage = btoa(message);  // Simple base64 encoding (for demonstration)
-            const decryptedMessage = atob(encryptedMessage);
-
-            // Display results in the HTML
-            document.getElementById("encryptedMessage").innerText = encryptedMessage;
-            document.getElementById("decryptedMessage").innerText = decryptedMessage;
-
-            // Hide the form and show the result section
-            document.getElementById("formSection").style.display = "none";
-            document.getElementById("resultSection").style.display = "block";
         }
 
         function goBack() {
-            // Reset fields and toggle visibility
             document.getElementById("formSection").style.display = "block";
             document.getElementById("resultSection").style.display = "none";
             document.getElementById("username").value = "";
             document.getElementById("password").value = "";
             document.getElementById("message").value = "";
+            document.getElementById("errorMsg").innerText = "";
         }
     </script>
 
 </body>
+
 </html>
