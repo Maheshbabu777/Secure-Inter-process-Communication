@@ -26,7 +26,7 @@ int main() {
     getline(cin, message);
 
     string encrypted_message = encrypt(message);
-
+    cout<<"encrypted message: "<<encrypted_message;
     write_to_shm(encrypted_message);
     string shm_message = read_from_shm();
     string decrypted_shm_message = decrypt(shm_message);
