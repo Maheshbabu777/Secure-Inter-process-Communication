@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure IPC | Communication Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-white text-black min-h-screen px-4 py-10">
+    <div class="max-w-4xl mx-auto">
+        <!-- About Section -->
+        <section class="mb-10">
+            <h1 class="text-4xl font-bold mb-4 text-center">About Secure IPC System</h1>
+            <ul class="list-disc text-lg text-gray-800 pl-5 mb-6">
+                <li>Secure IPC ensures safe and authenticated communication between processes.</li>
+                <li>Implements both Shared Memory and Message Queue mechanisms for inter-process communication.</li>
+                <li>Utilizes encryption to maintain confidentiality and integrity of messages.</li>
+                <li>Demonstrates custom authentication and access control using credentials.</li>
+                <li>Fully interactive interface to simulate real-world IPC scenarios.</li>
+            </ul>
+            <p class="text-md text-gray-600 text-center">
+                Explore below to test both methods with encrypted message transmission and reception.
+            </p>
+        </section>
+
+        <!-- Shared Memory Section -->
+        <section class="mb-10 border-t border-gray-300 pt-6">
+            <h2 class="text-2xl font-semibold mb-4">Shared Memory Communication</h2>
+            <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                <label for="shmInput" class="block mb-2 font-medium">Message to write to shared memory:</label>
+                <input id="shmInput" type="text" class="w-full p-3 rounded border border-gray-300 mb-4">
+                <button onclick="writeToShm()" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">Write</button>
+                <button onclick="readFromShm()" class="ml-4 bg-black text-white px-4 py-2 rounded hover:bg-gray-800">Read</button>
+                <p class="mt-4 text-green-700" id="shmOutput"></p>
+            </div>
+        </section>
+
+        <!-- Message Queue Section -->
+        <section class="border-t border-gray-300 pt-6">
+            <h2 class="text-2xl font-semibold mb-4">Message Queue Communication</h2>
+            <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                <label for="msgInput" class="block mb-2 font-medium">Message to send through message queue:</label>
+                <input id="msgInput" type="text" class="w-full p-3 rounded border border-gray-300 mb-4">
+                <button onclick="sendMsg()" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">Send</button>
+                <button onclick="receiveMsg()" class="ml-4 bg-black text-white px-4 py-2 rounded hover:bg-gray-800">Receive</button>
+                <p class="mt-4 text-green-700" id="msgOutput"></p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let sharedMemoryEncrypted = "";
+        let messageQueueEncrypted = "";
+    
+        function writeToShm() {
+            const msg = document.getElementById("shmInput").value;
+            sharedMemoryEncrypted = encrypt(msg);
+            document.getElementById("shmOutput").innerText = `Encrypted and written to shared memory: ${sharedMemoryEncrypted}`;
+        }
+    
+        function readFromShm() {
+            if (sharedMemoryEncrypted) {
+                const decrypted = decrypt(sharedMemoryEncrypted);
+                document.getElementById("shmOutput").innerText = `Decrypted from shared memory: ${decrypted}`;
+            } else {
+                document.getElementById("shmOutput").innerText = "No data found in shared memory.";
+            }
+        }
+    
+        function sendMsg() {
+            const msg = document.getElementById("msgInput").value;
+            messageQueueEncrypted = encrypt(msg);
+            document.getElementById("msgOutput").innerText = `Message sent through queue: ${messageQueueEncrypted}`;
+        }
+    
+        function receiveMsg() {
+            if (messageQueueEncrypted) {
+                const decrypted = decrypt(messageQueueEncrypted);
+                document.getElementById("msgOutput").innerText = `Message received from queue: ${decrypted}`;
+            } else {
+                document.getElementById("msgOutput").innerText = "No message found in queue.";
+            }
+        }
+    
+        function encrypt(msg) {
+            const key = 'Security789@';
+            return msg.split('').map((ch, i) =>
+                String.fromCharCode(ch.charCodeAt(0) ^ key.charCodeAt(i % key.length))
+            ).join('');
+        }
+    
+        function decrypt(msg) {
+            return encrypt(msg); // XOR again to decrypt
+        }
+    </script>
+    
+</body>
+</html>

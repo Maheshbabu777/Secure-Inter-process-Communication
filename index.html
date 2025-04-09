@@ -3,159 +3,53 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Inter-Process Communication</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            background-color: white;
-            padding: 20px 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
-            text-align: center;
-        }
-
-        h2 {
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        input,
-        textarea,
-        button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .output {
-            background-color: #e9ecef;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            text-align: left;
-            display: none;
-        }
-
-        p {
-            margin: 10px 0;
-            color: #555;
-        }
-
-        .message {
-            font-weight: bold;
-            color: #007BFF;
-        }
-
-        .error {
-            color: red;
-            font-weight: bold;
-        }
-    </style>
+    <title>Secure IPC | User Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-
-    <div class="container">
-        <h2>Secure Inter-Process Communication</h2>
+<body class="bg-white text-black min-h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-300 w-full max-w-md">
+        <h1 class="text-3xl font-bold text-center text-black mb-6">Welcome to Secure IPC</h1>
+        <p class="text-center text-gray-600 mb-6">Sign in to access your secure communication panel.</p>
 
         <div id="formSection">
-            <label for="username">Username:</label>
-            <input type="text" id="username" required>
+            <label for="username" class="block text-sm font-semibold mb-1">Username</label>
+            <input type="text" id="username" class="w-full p-3 rounded-lg bg-gray-100 text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black mb-4" required>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" required>
+            <label for="password" class="block text-sm font-semibold mb-1">Password</label>
+            <input type="password" id="password" class="w-full p-3 rounded-lg bg-gray-100 text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black mb-4" required>
 
-            <label for="message">Enter Your Message:</label>
-            <textarea id="message" rows="4" required></textarea>
+            <p id="errorMsg" class="text-red-600 font-semibold text-sm mb-4"></p>
 
-            <p id="errorMsg" class="error"></p>
-
-            <button onclick="processMessage()">Send and Encrypt</button>
+            <button onclick="validateUser()" class="w-full bg-black hover:bg-gray-800 transition-colors p-3 rounded-lg font-semibold text-white">Login</button>
         </div>
 
-        <div id="resultSection" class="output">
-            <p><strong>Encrypted Message in Shared Memory:</strong></p>
-            <p class="message" id="encryptedMessage"></p>
-
-            <p><strong>Decrypted Message from Message Queue:</strong></p>
-            <p class="message" id="decryptedMessage"></p>
-
-            <button onclick="goBack()">Send Another Message</button>
+        <div id="accessSection" class="hidden text-center mt-6">
+            <p class="text-green-600 font-bold text-lg">Access Granted</p>
+            <p class="text-gray-600 mt-2">Redirecting to secure communication interface...</p>
         </div>
     </div>
 
     <script>
-        function encryptMessage(message) {
-            const secretKey = 'Security789@';
-            return message.split('').map((char, i) => String.fromCharCode(char.charCodeAt(0) ^ secretKey[i % secretKey.length].charCodeAt(0))).join('');
-        }
-
-        function decryptMessage(encryptedMessage) {
-            const secretKey = 'Security789@';
-            return encryptedMessage.split('').map((char, i) => String.fromCharCode(char.charCodeAt(0) ^ secretKey[i % secretKey.length].charCodeAt(0))).join('');
-        }
-        function processMessage() {
+        function validateUser() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
-            const message = document.getElementById("message").value;
-
             const errorMsg = document.getElementById("errorMsg");
 
             if ((username === "user1" && password === "user@001") || (username === "user2" && password === "user@002")) {
                 errorMsg.innerText = "";
-                const encryptedMessage = encryptMessage(message);
-                const decryptedMessage = decryptMessage(encryptedMessage);
+                document.getElementById("formSection").classList.add("hidden");
+                document.getElementById("accessSection").classList.remove("hidden");
 
-                document.getElementById("encryptedMessage").innerText = encryptedMessage;
-                document.getElementById("decryptedMessage").innerText = decryptedMessage;
-
-                document.getElementById("formSection").style.display = "none";
-                document.getElementById("resultSection").style.display = "block";
+                setTimeout(() => {
+                    window.location.href = "../secure.html";
+                }, 2000);
             } else {
                 errorMsg.innerText = "Invalid username or password. Please try again.";
             }
         }
-
-        function goBack() {
-            document.getElementById("formSection").style.display = "block";
-            document.getElementById("resultSection").style.display = "none";
-            document.getElementById("username").value = "";
-            document.getElementById("password").value = "";
-            document.getElementById("message").value = "";
-            document.getElementById("errorMsg").innerText = "";
-        }
     </script>
-
 </body>
 
 </html>
