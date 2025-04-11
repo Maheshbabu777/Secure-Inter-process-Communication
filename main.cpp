@@ -4,6 +4,14 @@
 #include "include/management.h"
 using namespace std;
 
+void print_hex(const string &data) {
+    for (unsigned char c : data) {
+        printf("%02X ", c);
+    }
+    printf("\n");
+}
+
+
 int main() {
     string username, password;
     cout << "Username: ";
@@ -20,26 +28,37 @@ int main() {
     log_message("Login successful: " + username);
     create_shm();
 
-    string message;
-    cout << "Enter your message: ";
+    int role;
+    cout << "\nSelect :\n1. Sender\n2. Receiver\nChoice: ";
+    cin >> role;
     cin.ignore();
-    getline(cin, message);
 
-    string encrypted_message = encrypt(message);
-    cout<<"encrypted message: "<<encrypted_message;
-    write_to_shm(encrypted_message);
-    string shm_message = read_from_shm();
-    string decrypted_shm_message = decrypt(shm_message);
+    if (role == 1) {
+        string message;
+        cout << "Enter your message: ";
+        getline(cin, message);
 
-    cout << "\nMessage from Shared Memory (Decrypted): " << decrypted_shm_message << endl;
-    log_message("Message read from shared memory and decrypted successfully.");
+        string encrypted_message = encrypt(message);
+        cout << "Encrypted Message: " << encrypted_message << endl;
+        print_hex(encrypted_message);
 
-    send_msg(encrypted_message);
-    string received_encrypted_msg = recive_msg();
-    string decrypted_queue_message = decrypt(received_encrypted_msg);
+        write_to_shm(encrypted_message);
+        send_msg(encrypted_message);
 
-    cout << "Message from Message Queue (Decrypted): " << decrypted_queue_message << endl;
-    log_message("Message sent, received, and decrypted successfully using message queue.");
+        log_message("Message encrypted, written to SHM, and sent via queue.");
+    } else if (role == 2) {
+        string shm_message = read_from_shm();
+        string decrypted_shm = decrypt(shm_message);
+        cout << "Message from Shared Memory (Decrypted): " << decrypted_shm << endl;
+
+        string queue_message = recive_msg();
+        string decrypted_queue = decrypt(queue_message);
+        cout << "Message from Message Queue (Decrypted): " << decrypted_queue << endl;
+
+        log_message("Message read from SHM and MQ, then decrypted.");
+    } else {
+        cout << "Invalid role selected!" << endl;
+    }
 
     return 0;
 }

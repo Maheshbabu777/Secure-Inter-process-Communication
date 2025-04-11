@@ -51,50 +51,64 @@
     </div>
 
     <script>
-        let sharedMemoryEncrypted = "";
-        let messageQueueEncrypted = "";
-    
-        function writeToShm() {
-            const msg = document.getElementById("shmInput").value;
-            sharedMemoryEncrypted = encrypt(msg);
-            document.getElementById("shmOutput").innerText = `Encrypted and written to shared memory: ${sharedMemoryEncrypted}`;
-        }
-    
-        function readFromShm() {
-            if (sharedMemoryEncrypted) {
-                const decrypted = decrypt(sharedMemoryEncrypted);
-                document.getElementById("shmOutput").innerText = `Decrypted from shared memory: ${decrypted}`;
-            } else {
-                document.getElementById("shmOutput").innerText = "No data found in shared memory.";
-            }
-        }
-    
-        function sendMsg() {
-            const msg = document.getElementById("msgInput").value;
-            messageQueueEncrypted = encrypt(msg);
-            document.getElementById("msgOutput").innerText = `Message sent through queue: ${messageQueueEncrypted}`;
-        }
-    
-        function receiveMsg() {
-            if (messageQueueEncrypted) {
-                const decrypted = decrypt(messageQueueEncrypted);
-                document.getElementById("msgOutput").innerText = `Message received from queue: ${decrypted}`;
-            } else {
-                document.getElementById("msgOutput").innerText = "No message found in queue.";
-            }
-        }
+        const key = 'Security789@';
     
         function encrypt(msg) {
-            const key = 'Security789@';
             return msg.split('').map((ch, i) =>
                 String.fromCharCode(ch.charCodeAt(0) ^ key.charCodeAt(i % key.length))
             ).join('');
         }
     
         function decrypt(msg) {
-            return encrypt(msg); // XOR again to decrypt
+            return encrypt(msg); 
         }
+    
+        function writeToShm() {
+            const msg = document.getElementById("shmInput").value;
+            const encrypted = encrypt(msg);
+            localStorage.setItem("shm_data", encrypted);
+            document.getElementById("shmOutput").innerText = `Encrypted and written to shared memory: ${encrypted}`;
+        }
+    
+        function readFromShm() {
+            const encrypted = localStorage.getItem("shm_data");
+            if (encrypted) {
+                const decrypted = decrypt(encrypted);
+                document.getElementById("shmOutput").innerText = `Decrypted from shared memory: ${decrypted}`;
+            } else {
+                document.getElementById("shmOutput").innerText = "No data in shared memory.";
+            }
+        }
+    
+        function sendMsg() {
+            const msg = document.getElementById("msgInput").value;
+            const encrypted = encrypt(msg);
+            localStorage.setItem("msg_data", encrypted);
+            document.getElementById("msgOutput").innerText = `Message sent through queue: ${encrypted}`;
+        }
+    
+        function receiveMsg() {
+            const encrypted = localStorage.getItem("msg_data");
+            if (encrypted) {
+                const decrypted = decrypt(encrypted);
+                document.getElementById("msgOutput").innerText = `Message received from queue: ${decrypted}`;
+            } else {
+                document.getElementById("msgOutput").innerText = "No message in queue.";
+            }
+        }
+    
+        window.addEventListener("storage", (e) => {
+            if (e.key === "shm_data") {
+                const decrypted = decrypt(e.newValue);
+                document.getElementById("shmOutput").innerText = `New Shared Memory Message: ${decrypted}`;
+            }
+            if (e.key === "msg_data") {
+                const decrypted = decrypt(e.newValue);
+                document.getElementById("msgOutput").innerText = `New Queue Message: ${decrypted}`;
+            }
+        });
     </script>
+    
     
 </body>
 </html>

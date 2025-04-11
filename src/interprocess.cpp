@@ -33,7 +33,6 @@ void write_to_shm(const string &str) {
         return;
     }
 
-    // Write size followed by raw data
     int len = str.size();
     memcpy(ptr, &len, sizeof(int));
     memcpy((char*)ptr + sizeof(int), str.data(), len);
@@ -69,7 +68,6 @@ void send_msg(const string &str) {
     message msg;
     msg.msg_type = 1;
 
-    // Send size first and then raw data
     memset(msg.mes, 0, SHM_SIZE);
     int len = str.size();
     memcpy(msg.mes, &len, sizeof(int));

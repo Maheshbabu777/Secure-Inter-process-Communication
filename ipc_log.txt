@@ -31,3 +31,17 @@ Log: Message sent, received, and decrypted successfully using message queue.
 Log: Login successful: user2
 Log: Message read from shared memory and decrypted successfully.
 Log: Message sent, received, and decrypted successfully using message queue.
+Log: Login successful: user1
+Log: Message read from shared memory and decrypted successfully.
+Log: Message sent, received, and decrypted successfully using message queue.
+Log: Login successful: user1
+Log: Message read from shared memory and decrypted successfully.
+Log: Message sent, received, and decrypted successfully using message queue.
+Log: Login successful: user1
+Log: Message encrypted, written to SHM, and sent via queue.
+Log: Login successful: user2
+Log: Message read from SHM and MQ, then decrypted.
+Log: Login successful: user1
+Log: Message encrypted, written to SHM, and sent via queue.
+Log: Login successful: user2
+Log: Message read from SHM and MQ, then decrypted.
